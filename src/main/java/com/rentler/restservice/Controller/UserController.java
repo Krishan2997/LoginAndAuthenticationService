@@ -1,5 +1,6 @@
 package com.rentler.restservice.Controller;
 
+import com.rentler.restservice.Exception.ResourceNotFoundException;
 import com.rentler.restservice.Model.User;
 import com.rentler.restservice.Model.UserData;
 import com.rentler.restservice.Services.IAuthenticationUserService;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public boolean logOut(@RequestBody User user, HttpSession session){
+    public boolean logOut(HttpSession session){
         if(session.getAttribute("username")!=null){
             session.setAttribute("username", null);
         }
@@ -47,5 +48,19 @@ public class UserController {
     @RequestMapping(value = "allusers", method = RequestMethod.POST)
     public List<UserData> getUsers(){
         return authenticationUserService.getAllUsers();
+    }
+
+    @RequestMapping(value = "getCurrentUserData", method = RequestMethod.GET)
+    public UserData getCurrentUserData(HttpSession session){
+        try{
+            int userId= (int) session.getAttribute("username");
+            if(userId!=0) {
+                return authenticationUserService.getUserById(userId);
+            }
+            return null;
+        }
+        catch (Exception ex){
+            throw new ResourceNotFoundException("not yet authenticated");
+        }
     }
 }

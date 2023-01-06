@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,8 +28,7 @@ public class AuthenticationUserService implements IAuthenticationUserService{
 
     @Override
     public boolean checkIfUserIsCreated(User user){
-        if(checkUsersAreInitiated() && checkUsernameAndPassword(user)) return true;
-        return false;
+        return checkUsersAreInitiated() && checkUsernameAndPassword(user);
     }
 
     @Override
@@ -54,6 +54,15 @@ public class AuthenticationUserService implements IAuthenticationUserService{
             throw new DataMissMatchException("Some issue while saving the data"+e.getMessage());
         }
         return "Data is not correct";
+    }
+
+    @Override
+    public UserData getUserById(int userId) {
+        Optional<UserData> optionalUserData=userDataRepository.findById(userId);
+        if(optionalUserData.isPresent()) {
+            return optionalUserData.get();
+        }
+        return null;
     }
 
     private boolean checkIfUsedDataIsValid(UserData userData){

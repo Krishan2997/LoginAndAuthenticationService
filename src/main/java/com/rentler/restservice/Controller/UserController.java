@@ -29,9 +29,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "signup", method = RequestMethod.POST)
-    public UserData signUpUser(@RequestBody UserData userData, HttpSession session, String password){
+    public UserData signUpUser(@RequestBody UserData userData, HttpSession session){
         if(session.getAttribute("username")==null){
-            authenticationUserService.addUser(userData, password);
+            authenticationUserService.addUser(userData);
             return userData;
         }
         return null;
@@ -53,8 +53,8 @@ public class UserController {
     @RequestMapping(value = "getCurrentUserData", method = RequestMethod.GET)
     public UserData getCurrentUserData(HttpSession session){
         try{
-            int userId= (int) session.getAttribute("username");
-            if(userId!=0) {
+            String userId= session.getAttribute("username").toString();
+            if(userId!=null) {
                 return authenticationUserService.getUserById(userId);
             }
             return null;
@@ -62,5 +62,13 @@ public class UserController {
         catch (Exception ex){
             throw new ResourceNotFoundException("not yet authenticated");
         }
+    }
+
+    @RequestMapping(value = "checkIfUserIdIsValid")
+    public boolean checkIfUserIdIsValid(@RequestBody String userId){
+        if(authenticationUserService.getUserById(userId)!=null){
+            return false;
+        }
+        return true;
     }
 }

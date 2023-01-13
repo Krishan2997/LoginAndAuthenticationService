@@ -40,14 +40,15 @@ public class AuthenticationUserService implements IAuthenticationUserService{
     }
 
     @Override
-    public String addUser(UserData userData, String password) {
+    public String addUser(UserData userData) {
         try {
             if(checkIfUsedDataIsValid(userData)){
-                int userId=userData.getUserId();
+                String userId=userData.getUserId();
+                String password=userData.getPassword();
                 User user=new User(userId, password);
                 userRepository.save(user);
                 userDataRepository.save(userData);
-                return Integer.toString(userId);
+                return userId;
             }
         }
         catch (Exception e){
@@ -57,7 +58,7 @@ public class AuthenticationUserService implements IAuthenticationUserService{
     }
 
     @Override
-    public UserData getUserById(int userId) {
+    public UserData getUserById(String userId) {
         Optional<UserData> optionalUserData=userDataRepository.findById(userId);
         if(optionalUserData.isPresent()) {
             return optionalUserData.get();

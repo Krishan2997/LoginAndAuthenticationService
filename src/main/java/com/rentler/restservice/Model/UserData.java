@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class UserData{
 
     @Id
-    int userId;
+    String userId;
 
     @Column(name = "FirstName")
     String fName;
@@ -38,7 +38,21 @@ public class UserData{
     @Column(name = "Country")
     String country;
 
-    public UserData(int userId, String userName, String fName, String lName, String phoneNumber, String emailId, String address1, String address2, String city, String state, String country) {
+    @Column(name = "Password")
+    String password;
+
+    public UserData(String userId,
+                    String userName,
+                    String fName,
+                    String lName,
+                    String phoneNumber,
+                    String emailId,
+                    String address1,
+                    String address2,
+                    String city,
+                    String state,
+                    String country,
+                    String password) {
         this.userId = userId;
         this.fName = fName;
         this.lName = lName;
@@ -49,15 +63,16 @@ public class UserData{
         this.city = city;
         this.state = state;
         this.country = country;
+        this.password=password;
     }
 
     public UserData(){}
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -133,4 +148,11 @@ public class UserData{
         this.country = country;
     }
 
+    public String getPassword(){
+        return this.password;
+    }
+
+    public void setPassword(String password){
+        this.password=password;
+    }
 }

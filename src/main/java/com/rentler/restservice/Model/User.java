@@ -9,22 +9,22 @@ public class User {
 
     @Id
     @Column(name = "UserId")
-    int userId;
+    String userId;
     @Column(name = "PasswordHashCode")
     String password;
 
-    public User(int userId, String password) {
+    public User(String userId, String password) {
         this.userId = userId;
         this.password = password;
     }
 
     public User(){}
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
